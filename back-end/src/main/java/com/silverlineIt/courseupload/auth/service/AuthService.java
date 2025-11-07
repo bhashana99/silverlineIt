@@ -5,6 +5,7 @@ import com.silverlineIt.courseupload.auth.dto.UserResponseDTO;
 import com.silverlineIt.courseupload.auth.model.User;
 import com.silverlineIt.courseupload.auth.repository.UserRepository;
 import com.silverlineIt.courseupload.exception.CustomException;
+import com.silverlineIt.courseupload.secutity.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenUtil jwtTokenUtil;
 
     public UserResponseDTO register(UserRegisterDTO dto) {
         if(userRepository.findByUsername(dto.getUsername()).isPresent()) {
@@ -40,5 +42,16 @@ public class AuthService {
         dto.setRole(user.getRole());
 
         return dto;
+    }
+
+    public String login(String username, String password) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new CustomException("Invalid credentials"));
+
+        if(!passwordEncoder.matches(password, user.getPassword())) {
+            throw new CustomException("Invalid credentials");
+        }
+
+        return jwtTokenUtil.generateToken(user.getUsername());
     }
 }
