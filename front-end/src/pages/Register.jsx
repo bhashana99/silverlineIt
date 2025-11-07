@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { registerUser } from "../services/AuthService";
 
 export default function Register() {
 
@@ -12,12 +13,13 @@ export default function Register() {
     });
 
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!formData.username || !formData.password || !formData.confirmPassword) {
@@ -33,7 +35,7 @@ export default function Register() {
         }
 
         setError("");
-
+        setLoading(true);
 
         const payload = {
             username: formData.username,
@@ -43,7 +45,20 @@ export default function Register() {
 
         console.log("Register payload:", payload);
 
-        navigate("/login");
+        try {
+            await registerUser(payload);
+            navigate("/login");
+        } catch (error) {
+            console.log("Axios error full object:", error);
+            console.log("Axios response:", error.response);
+            const errMsg = error.response?.data?.error || "Something went wrong";
+            setError(errMsg);
+            setTimeout(() => setError(""), 4000);
+        } finally {
+            setLoading(false);
+        }
+
+
     };
 
     return (
