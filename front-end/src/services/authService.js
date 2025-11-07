@@ -1,0 +1,17 @@
+import axios from "axios";
+
+const API_URL = import.meta.env.VITE_AUTH_API_URL;
+
+
+export const registerUser = async (userData) => {
+    try {
+        const response = await axios.post(`${API_URL}/register`, userData);
+        return response.data;
+    } catch (error) {
+        if (error.response && error.response.data) {
+            throw new Error(error.response.data.message);
+        } else {
+            throw new Error("Network error. Please try again.");
+        }
+    }
+}
