@@ -19,18 +19,24 @@ export default function Register() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+
+    const timeOut = (time)=>{
+        setTimeout(() => setError(""), time);
+    }
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!formData.username || !formData.password || !formData.confirmPassword) {
             setError("All fields are required");
-            setTimeout(() => setError(""), 3000);
+            timeOut(3000);
             return;
         }
 
         if (formData.password !== formData.confirmPassword) {
             setError("Passwords do not match");
-            setTimeout(() => setError(""), 3000);
+            timeOut(3000);
             return;
         }
 
@@ -45,13 +51,13 @@ export default function Register() {
 
         if (payload.username.length < 3) {
             setError("Username must be at least 3 characters ");
-            setTimeout(() => setError(""), 3000);
+            timeOut(3000);
             return;
         }
 
         if (payload.password.length < 6) {
             setError("Password must be at least 6 characters");
-            setTimeout(() => setError(""), 3000);
+            timeOut(3000);
             return;
         }
 
@@ -66,7 +72,7 @@ export default function Register() {
 
             const errMsg = error.message || "Something went wrong";
             setError(errMsg);
-            setTimeout(() => setError(""), 4000);
+            timeOut(4000);
         } finally {
             setLoading(false);
         }

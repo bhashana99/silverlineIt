@@ -15,3 +15,17 @@ export const registerUser = async (userData) => {
         }
     }
 }
+
+export const loginUser = async (userData) => {
+    try {
+        const response = await axios.post(`${API_URL}/login`, userData);
+        return response.data;
+    } catch (error) {
+        if (error.response && error.response.data && error.response.data.error) {
+            throw new Error(error.response.data.error);
+        } else {
+            throw new Error("Network error. Please try again.");
+        }
+    }
+}
+
