@@ -43,6 +43,19 @@ export default function Register() {
             role: "INSTRUCTOR",
         };
 
+        if (payload.username.length < 3) {
+            setError("Username must be at least 3 characters ");
+            setTimeout(() => setError(""), 3000);
+            return;
+        }
+
+        if (payload.password.length < 6) {
+            setError("Password must be at least 6 characters");
+            setTimeout(() => setError(""), 3000);
+            return;
+        }
+
+
         console.log("Register payload:", payload);
 
         try {
@@ -50,15 +63,15 @@ export default function Register() {
             navigate("/login");
         } catch (error) {
             console.log("Axios error full object:", error);
-            console.log("Axios response:", error.response);
-            const errMsg = error.response?.data?.error || "Something went wrong";
+
+            const errMsg = error.message || "Something went wrong";
             setError(errMsg);
             setTimeout(() => setError(""), 4000);
         } finally {
             setLoading(false);
         }
 
-
+        
     };
 
     return (

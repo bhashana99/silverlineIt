@@ -8,8 +8,8 @@ export const registerUser = async (userData) => {
         const response = await axios.post(`${API_URL}/register`, userData);
         return response.data;
     } catch (error) {
-        if (error.response && error.response.data) {
-            throw new Error(error.response.data.message);
+        if (error.response && error.response.data && error.response.data.error) {
+            throw new Error(error.response.data.error);
         } else {
             throw new Error("Network error. Please try again.");
         }
