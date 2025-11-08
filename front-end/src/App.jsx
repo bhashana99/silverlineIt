@@ -4,6 +4,7 @@ import NotFound from "./pages/NotFound.jsx";
 import Home from "./pages/Home.jsx";
 import Footer from "./components/Footer.jsx";
 import Register from "./pages/Register.jsx";
+import Login from "./pages/Login.jsx";
 
 
 
@@ -17,6 +18,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
 
         </Routes>
       
