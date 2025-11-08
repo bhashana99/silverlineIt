@@ -20,7 +20,7 @@ export default function Login() {
     };
 
 
-    const timeOut = (time)=>{
+    const timeOut = (time) => {
         setTimeout(() => setError(""), time);
     }
 
@@ -32,7 +32,11 @@ export default function Login() {
         try {
             const data = await loginUser(formData);
             localStorage.setItem("token", data.token);
-            navigate("/dashboard");
+            
+            setTimeout(() => {
+                navigate("/dashboard");
+            }, 100);
+
         } catch (err) {
             setError(err.message);
             timeOut(3000);
